@@ -24,10 +24,40 @@ hist(satisfaction[[1]], main = "Satisfactions", col = "red")
 
 library(car)
 leveneTest(recommend[[1]], group = as.factor(gender[[1]]))
+
+#Levene's Test for Homogeneity of Variance (center = median)
+#       Df F value    Pr(>F)    
+#group   1  11.727 0.0007486 ***
+#       198                      
+#---
+#Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
 leveneTest(recommend[[1]], group = as.factor(distance[[1]]))
+#Levenes Test for Homogeneity of Variance (center = median)
+#       Df F value Pr(>F)
+#group   2  0.0946 0.9098
+#       183               
+
 
 leveneTest(satisfaction[[1]], group = as.factor(gender[[1]]))
+#Levene's Test for Homogeneity of Variance (center = median)
+#       Df F value  Pr(>F)  
+#group   1  5.2572 0.02291 *
+#       198                  
+#---
+#Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
 leveneTest(satisfaction[[1]], group = as.factor(distance[[1]]))
+#Levene's Test for Homogeneity of Variance (center = median)
+#       Df F value  Pr(>F)  
+#group   2  2.6119 0.07613 .
+#183                  
+#---
+#Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+
+
 
 ###########################################################
 #Apriori power analysis
