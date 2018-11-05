@@ -13,12 +13,21 @@ satisfaction = data['x9']
 #Testing for normality
 par(mfrow=c(1, 2))
 qqnorm(recommend[[1]], main = "Recommendations", col = 'blue')
-hist(recommend[[1]], main = "Recommendations", col = "blue")
+#hist(recommend[[1]], main = "Recommendations", col = "blue", breaks = 7, range(7), right = FALSE)
+barplot(table(recommend[[1]]), ylab = "Frequencies", main = "Recommendations", xlab = "Scores", col = "blue")
+skewness(recommend[[1]])
+#0.145
+
 
 par(mfrow=c(1, 2))
 qqnorm(satisfaction[[1]], main = "Satisfactions", col = 'red')
-hist(satisfaction[[1]], main = "Satisfactions", col = "red")
+#hist(satisfaction[[1]], main = "Satisfactions", col = "red", xlim = range(5))
+barplot(table(satisfaction[[1]]), ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
+#barplot(satisfaction[[1]], ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
+skewness(satisfaction[[1]])
+#0.023
 
+library('e1071')
 #######################################################
 #Test for Homogeniety of varience
 
