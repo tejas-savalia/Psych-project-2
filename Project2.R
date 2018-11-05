@@ -13,21 +13,37 @@ satisfaction = data['x9']
 #Testing for normality
 par(mfrow=c(1, 2))
 qqnorm(recommend[[1]], main = "Recommendations", col = 'blue')
-#hist(recommend[[1]], main = "Recommendations", col = "blue", breaks = 7, range(7), right = FALSE)
-barplot(table(recommend[[1]]), ylab = "Frequencies", main = "Recommendations", xlab = "Scores", col = "blue")
+hist(recommend[[1]], main = "Recommendations", col = "blue", breaks = seq(1, 7, 1))
+#barplot(table(recommend[[1]]), ylab = "Frequencies", main = "Recommendations", xlab = "Scores", col = "blue")
 skewness(recommend[[1]])
 #0.145
 
 
 par(mfrow=c(1, 2))
 qqnorm(satisfaction[[1]], main = "Satisfactions", col = 'red')
-#hist(satisfaction[[1]], main = "Satisfactions", col = "red", xlim = range(5))
-barplot(table(satisfaction[[1]]), ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
+hist(satisfaction[[1]], main = "Satisfactions", col = "red", breaks = seq(1, 7, 1))
+#barplot(table(satisfaction[[1]]), ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
 #barplot(satisfaction[[1]], ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
 skewness(satisfaction[[1]])
 #0.023
 
 library('e1071')
+
+shapiro.test(satisfaction[[1]])
+
+#Shapiro-Wilk normality test
+
+#data:  satisfaction[[1]]
+#W = 0.89711, p-value = 1.652e-10
+
+shapiro.test(recommend[[1]])
+
+#Shapiro-Wilk normality test
+
+#data:  recommend[[1]]
+#W = 0.89681, p-value = 1.581e-10
+
+
 #######################################################
 #Test for Homogeniety of varience
 
