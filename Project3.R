@@ -7,23 +7,23 @@ gender = data['x7']
 #usage = data['x10']
 
 recommend = data['x8']
-satisfaction = data['x9']
+#satisfaction = data['x9']
 
 #####################################################
 female_low_recommend = recommend[gender[[1]] == 0 & distance[[1]] == 1, 1]
 female_mid_recommend = recommend[gender[[1]] == 0 & distance[[1]] == 2, 1]
 female_high_recommend = recommend[gender[[1]] == 0 & distance[[1]] == 3, 1]
-female_low_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 1, 1]
-female_mid_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 2, 1]
-female_high_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 3, 1]
+#female_low_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 1, 1]
+#female_mid_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 2, 1]
+#female_high_satisfy = satisfaction[gender[[1]] == 0 & distance[[1]] == 3, 1]
 
 
 male_low_recommend = recommend[gender[[1]] == 1 & distance[[1]] == 1, 1]
 male_mid_recommend = recommend[gender[[1]] == 1 & distance[[1]] == 2, 1]
 male_high_recommend = recommend[gender[[1]] == 1 & distance[[1]] == 3, 1]
-male_low_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 1, 1]
-male_mid_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 2, 1]
-male_high_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 3, 1]
+#male_low_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 1, 1]
+#male_mid_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 2, 1]
+#male_high_satisfy = satisfaction[gender[[1]] == 1 & distance[[1]] == 3, 1]
 
 #Testing for normality
 par(mfrow=c(2, 3), row.names(c("males", "females")), colnames(c('low, mid, high')))
@@ -41,7 +41,7 @@ hist(female_low_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col 
 hist(female_mid_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
 hist(female_high_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
 
-hist(recommend[[1]], main = "Recommendations", col = "blue", breaks = seq(1, 7, 1))
+#hist(recommend[[1]], main = "Recommendations", col = "blue", breaks = seq(1, 7, 1))
 #barplot(table(recommend[[1]]), ylab = "Frequencies", main = "Recommendations", xlab = "Scores", col = "blue")
 library('e1071')
 
@@ -49,29 +49,37 @@ skewness(recommend[[1]])
 #0.145
 
 
-par(mfrow=c(1, 2))
-qqnorm(satisfaction[[1]], main = "Satisfactions", col = 'red')
-hist(satisfaction[[1]], main = "Satisfactions", col = "red", breaks = seq(1, 7, 1))
-#barplot(table(satisfaction[[1]]), ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
-#barplot(satisfaction[[1]], ylab = "Frequencies", xlab = "Scores", col = "red", main = "Satisfactions")
-skewness(satisfaction[[1]])
-#0.023
 
+#Shapiro test for male_high_recommend throws up an error because all entries in that
+#group are identical. I guess, we can say it's heavily not-normal.
 
-shapiro.test(satisfaction[[1]])
+shapiro.test(male_mid_recommend)
 
 #Shapiro-Wilk normality test
 
-#data:  satisfaction[[1]]
-#W = 0.89711, p-value = 1.652e-10
-
-shapiro.test(recommend[[1]])
-
+#data:  male_mid_recommend
+#W = 0.42208, p-value = 4.195e-08
+shapiro.test(male_low_recommend)
 #Shapiro-Wilk normality test
 
-#data:  recommend[[1]]
-#W = 0.89681, p-value = 1.581e-10
+#data:  male_low_recommend
+#W = 0.41679, p-value = 1.109e-12
+shapiro.test(female_high_recommend)
+#Shapiro-Wilk normality test
 
+#data:  female_high_recommend
+#W = 0.63036, p-value = 6.75e-07
+shapiro.test(female_mid_recommend)
+#Shapiro-Wilk normality test
+
+#data:  female_mid_recommend
+#W = 0.86774, p-value = 3.548e-05
+
+shapiro.test(female_low_recommend)
+#Shapiro-Wilk normality test
+
+#data:  female_low_recommend
+#W = 0.80629, p-value = 3.399e-05
 
 #######################################################
 #Test for Homogeniety of varience
@@ -92,23 +100,6 @@ leveneTest(recommend[[1]], group = as.factor(distance[[1]]))
 #group   2  0.0946 0.9098
 #       183               
 
-
-leveneTest(satisfaction[[1]], group = as.factor(gender[[1]]))
-#Levene's Test for Homogeneity of Variance (center = median)
-#       Df F value  Pr(>F)  
-#group   1  5.2572 0.02291 *
-#       198                  
-#---
-#Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-
-leveneTest(satisfaction[[1]], group = as.factor(distance[[1]]))
-#Levene's Test for Homogeneity of Variance (center = median)
-#       Df F value  Pr(>F)  
-#group   2  2.6119 0.07613 .
-#183                  
-#---
-#Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 
 
