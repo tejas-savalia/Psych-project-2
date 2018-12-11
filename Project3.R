@@ -103,16 +103,7 @@ leveneTest(recommend[[1]], group = as.factor(distance[[1]]))
 
 
 
-
-###########################################################
-#Apriori power analysis
-#used gpower
-#Need 42 samples in each group for an effect size of 0.8 to get a power of 0.95
-
-###########################################################
-#Null Hypothesis 1. No difference in recommendation across gender. Alternate would be 
-#there *is* a significant difference in recommendation across gender
-
+######################################################################################
 
 gender_fac <- as.factor(gender[[1]])
 dist_fac <- as.factor(distance[[1]])
