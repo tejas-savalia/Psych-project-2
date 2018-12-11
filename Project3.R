@@ -28,14 +28,14 @@ male_high_recommend = recommend[gender[[1]] == 1 & distance[[1]] == 3, 1]
 #Testing for normality
 par(mfrow=c(2, 3), row.names(c("males", "females")), colnames(c('low, mid, high')))
 qqnorm(male_low_recommend, main = "Recommendations", col = 'blue')
-qqnorm(male_high_recommend, main = "Recommendations", col = 'blue')
+qqnorm(male_mid_recommend, main = "Recommendations", col = 'blue')
 qqnorm(male_high_recommend, main = "Recommendations", col = 'blue')
 qqnorm(female_low_recommend, main = "Recommendations", col = 'blue')
 qqnorm(female_mid_recommend, main = "Recommendations", col = 'blue')
 qqnorm(female_high_recommend, main = "Recommendations", col = 'blue')
 
 hist(male_low_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
-hist(male_high_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
+hist(male_mid_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
 hist(male_high_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
 hist(female_low_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
 hist(female_mid_recommend, main = "Recommendations", breaks = seq(1, 7, 1), col = 'blue')
@@ -113,132 +113,36 @@ leveneTest(recommend[[1]], group = as.factor(distance[[1]]))
 #Null Hypothesis 1. No difference in recommendation across gender. Alternate would be 
 #there *is* a significant difference in recommendation across gender
 
-##############################
-#T test for recommendations 
-#Across Gender
 
-male_rec = recommend[gender == 1] #Will call this group 1
-female_rec = recommend[gender == 0] #Will call this group 2
+gender_fac <- as.factor(gender[[1]])
+dist_fac <- as.factor(distance[[1]])
 
+sub <- as.factor(1:200)
+d <- data.frame(recommend = recommend[[1]], gender_fac = gender_fac, sub = sub, dist_fac = dist_fac)
+aov.mult <- aov(recommend ~ gender_fac*dist_fac, data = d)
+Method <- as.factor(gender_fac*dist_fac)
+summary(aov.mult)
 
-
-#Independent groups design. 
-
-
-#mean1 = mean(male_rec)
-#sd1 = sd(male_rec)
-#n1 = length(male_rec)
-#mean2 = mean(female_rec)
-#sd2 = sd(female_rec)
-##n2 = length(female_rec)
-#s_pooled = sqrt(((n1-1)/(n1+n2-2))*sd1^2 + ((n2-1)/(n1+n2-2))*sd2^2)
-#mean_diff = mean1 - mean2
-#t_stat = mean_diff/((s_pooled)* sqrt((1/n1) + (1/n2)) )
-#(s_pooled)* sqrt((1/n1) + (1/n2))
-
-#pt(t_stat, df = 198)
-
-#effect_size = mean_diff/s_pooled
-
-t.test(male_rec, female_rec)
-#t = -5.882
-#df = 197.77,
-#p = 1.7e-08
-#95% CI -0.956, -0.476
-#Females are more likely to recommend
-
-#Across Distance
-
-lt1 = recommend[distance == 1]
-bt15 = recommend[distance == 2]
-gt5 = recommend[distance == 3]
-
-t.test(lt1, bt15)
-#t = -8.7343, df = 152.97, p-value = 4.005e-15
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -1.3605652 -0.8586129
-#sample estimates:
-#  mean of x mean of y 
-#4.000000  5.109589 
-
-t.test(bt15, gt5)
-#data:  bt15 and gt5
-#t = -3.0098, df = 80.939, p-value = 0.003485
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -0.6485006 -0.1323213
-#sample estimates:
-#  mean of x mean of y 
-#5.109589  5.500000 
-
-
-t.test(gt5, lt1)
-#data:  gt5 and lt1
-#t = 11.658, df = 82.293, p-value < 2.2e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  1.244057 1.755943
-#sample estimates:
-#  mean of x mean of y 
-#5.5       4.0 
-
-#Farther you are, more likely you are to recommend
-
-##############################
-#T tests for satisfactions
-#Across gender
-
-male_satsifaction = satisfaction[gender == 1]
-female_satisfaction = satisfaction[gender == 0]
-
-t.test(male_satsifaction, female_satisfaction)
-#data:  male_satsifaction and female_satisfaction
-#t = -5.3401, df = 137.94, p-value = 3.731e-07
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -0.9820319 -0.4513014
-#sample estimates:
-#  mean of x mean of y 
-#4.350000  5.066667 
-
-#Across distance
-lt1_satisfaction = satisfaction[distance == 1]
-bt15_satisfaction = satisfaction[distance == 2]
-gt5_satisfaction = satisfaction[distance == 3]
-
-t.test(lt1_satisfaction, bt15_satisfaction)
-#data:  lt1_satisfaction and bt15_satisfaction
-#t = -17.267, df = 150.07, p-value < 2.2e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -1.435577 -1.140756
-#sample estimates:
-#  mean of x mean of y 
-#3.903614  5.191781 
-
-t.test(bt15_satisfaction, gt5_satisfaction)
-#data:  bt15_satisfaction and gt5_satisfaction
-#t = -12.527, df = 69.682, p-value < 2.2e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  -1.0528273 -0.7636111
-#sample estimates:
-#  mean of x mean of y 
-#5.191781  6.100000 
-
-t.test(gt5_satisfaction, lt1_satisfaction)
-#data:  gt5_satisfaction and lt1_satisfaction
-#t = 27.208, df = 89.554, p-value < 2.2e-16
-#alternative hypothesis: true difference in means is not equal to 0
-#95 percent confidence interval:
-#  2.036001 2.356770
-#sample estimates:
-#  mean of x mean of y 
-#6.100000  3.903614 
-
-############################################################
+#                       Df Sum Sq Mean Sq F value   Pr(>F)    
+#  gender_fac            1  21.75  21.747  39.480 2.43e-09 ***
+#  dist_fac              2  53.03  26.516  48.138  < 2e-16 ***
+#  gender_fac:dist_fac   2   2.72   1.359   2.467   0.0877 .  
+#   Residuals           180  99.15   0.551                     
+#---
+#  Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#  14 observations deleted due to missingness
 
 
 
+library(multcomp)
+
+tukey_gender = TukeyHSD(aov.mult, "gender_fac")
+#             diff        lwr        upr       p adj
+#   1-0   -0.6986004 -0.9179912 -0.4792096 2.42611e-09
+
+tukey_dist = TukeyHSD(aov.mult, "dist_fac")
+#           diff         lwr       upr        p adj
+#2-1      0.8981295  0.61669134 1.1795677 6.551870e-12
+#3-1      1.1807200  0.80707361 1.5543664 1.009537e-11
+#3-2      0.2825904 -0.09778965 0.6629705 1.876334e-01
 
