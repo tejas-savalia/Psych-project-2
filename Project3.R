@@ -157,5 +157,18 @@ tukey_dist = TukeyHSD(aov.mult, "dist_fac")
 #1:3-1:1  2.1428571  1.03109433 3.2546200 0.0000015
 #1:3-1:2  1.1428571 -0.02350282 2.3092171 0.0584313
 
+library(ez)
+ez_anova <- ezANOVA(data = d, dv = .(recommend), wid = .(sub), between = .(dist_fac, gender_fac), detailed = TRUE)
+ez_anova
 
+#$`ANOVA`
+#             Effect    DFn DFd       SSn      SSd         F            p p<.05        ges
+#1            dist_fac   2  180 53.031590 99.14948 48.137852 1.793424e-17     * 0.34847691
+#2          gender_fac   1  180  2.756471 99.14948  5.004209 2.651297e-02     * 0.02704916
+#3 dist_fac:gender_fac   2  180  2.717334 99.14948  2.466579 8.773938e-02       0.02667536
 
+#$`Levene's Test for Homogeneity of Variance`
+#   DFn DFd      SSn      SSd        F           p        p<.05
+#1   5  180   16.44535  53.71057  11.02264  2.84727e-09     *
+  
+  
